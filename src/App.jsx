@@ -1,7 +1,6 @@
 import "./App.css";
 import { useState } from "react";
-import React from "react";
-import { Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from "react-router-dom";
 import p1 from "./assets/p1.png";
 import p2 from "./assets/p2.png";
 import p3 from "./assets/p3.png";
@@ -9,124 +8,103 @@ import p4 from "./assets/p4.png";
 import p5 from "./assets/p5.png";
 import p6 from "./assets/p6.png";
 
+// ---------- Login Component ----------
 function LoginForm() {
-  const [head, setHead] = useState("Log-In");
-  const [link, setLink] = useState("Want to Sign Up?");
-  const [count, setCount] = useState(2);
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  function Switch() {
-    setCount((p) => {
-      if (p % 2 === 0) {
-        setHead("Sign-Up");
-        setLink("Already have an Account?");
-      } else {
-        setHead("Log-In");
-        setLink("Want to Sign Up?");
-      }
-      return p + 1;
-    });
-  }
-
-  function Click() {
-    if (head === "Log-In") {
-      const storedUser = JSON.parse(localStorage.getItem("user"));
-      if (
-        storedUser &&
-        storedUser.email === email &&
-        storedUser.password === password
-      ) {
-        alert("Login successful!");
-        navigate("/Shop");
-      } else {
-        alert("Invalid credentials!");
-      }
+  function handleLogin() {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (
+      storedUser &&
+      storedUser.email === email &&
+      storedUser.password === password
+    ) {
+      alert("Login successful!");
+      navigate("/shop");
     } else {
-      const user = { name, email, password };
-      localStorage.setItem("user", JSON.stringify(user));
-      alert("Sign up successful! You can now log in.");
-      Switch();
+      alert("Invalid credentials!");
     }
   }
 
   return (
     <div className="container">
-      <h1 className="head">{head}</h1>
-      <h1 style={{ fontFamily: "inertia", color: "rgba(24, 38, 55, 0.90)", letterSpacing: "2px" }}>The Mountain Shop</h1>
-
+      <h1 className="head">Log-In</h1>
+      <h1 className="logo">The Mountain Shop</h1>
       <input
         className="email"
         type="text"
-        placeholder="Name"
-        style={{ display: count % 2 === 0 ? "none" : "block" }}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        className="email"
-        type="email"
         placeholder="Email"
         onChange={(e) => setEmail(e.target.value)}
       />
       <input
         className="password"
-        type="password"
+        type="text"
         placeholder="Password"
         onChange={(e) => setPassword(e.target.value)}
       />
-      <button className="login" onClick={Click}>
-        {head === "Log-In" ? "Login" : "Sign Up"}
-      </button>
-      <a href="#" id="switch" onClick={Switch}>
-        {link}
-      </a>
+      <button className="login" onClick={handleLogin}>Login</button>
+      <a href="/#/signup" id="switch">Don't have an account? Sign up</a>
     </div>
   );
 }
 
-export default function App() {
+// ---------- Signup Component ----------
+function SignupForm() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  function handleSignup() {
+    const user = { name, email, password };
+    localStorage.setItem("user", JSON.stringify(user));
+    alert("Sign up successful! You can now log in.");
+    navigate("/login");
+  }
+
   return (
-    <Routes>
-      <Route path="/" element={<Navigate to="/login" />} />
-      <Route path="/login" element={<LoginForm />} />
-      <Route path="/Shop" element={<Shop />} />
-      <Route path="/Information" element={<Information />} />
-    </Routes>
+    <div className="container">
+      <h1 className="head">Sign-Up</h1>
+      <h1 className="logo">The Mountain Shop</h1>
+      <input
+        className="email"
+        type="text"
+        placeholder="Name"
+        onChange={(e) => setName(e.target.value)}
+      />
+      <input
+        className="email"
+        type="text"
+        placeholder="Email"
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <input
+        className="password"
+        type="text"
+        placeholder="Password"
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button className="login" onClick={handleSignup}>Sign Up</button>
+      <a href="/#/login" id="switch">Already have an account? Log in</a>
+    </div>
   );
 }
 
+// ---------- Shop Component ----------
 function Shop() {
   const navigate = useNavigate();
   const [m, setM] = useState(2);
   const [img, setImg] = useState("🌙");
 
   const [plant] = useState([
-    {
-      name: "Weeping Willow Tree",
-      Price: "$74.95",
-      Photo: p1,
-      info:
-        "Weeping Willow Tree Salix babylonica Also known as: Babylonian Weeping Willow. A top choice for fast-growing shade, growing up to 3-4 ft. per year. Thrives in wet, soggy areas—a true solution tree. Classic shape and elegant, weeping branches add landscape impact."
-    },
-    {
-      name: "Elberta Peach Tree",
-      Price: "$90.95",
-      Photo: p2,
-      info:
-        "Elberta Peach Tree Prunus persica 'Early Elberta'. Yields large, juicy peaches ideal for eating and canning. Displays beautiful pink blossoms in spring. Cold-hardy and disease-resistant variety."
-    },
-    {
-      name: "Red Sunset Maple Tree",
-      Price: "$144.95",
-      Photo: p3,
-      info:
-        "Red Sunset Maple Tree. Acer rubrum 'Franksred' Red Sunset. One of our most popular maple trees, with vibrant fall foliage. Leaves change color earlier than other maples. Tolerant of heat, cold, and drought."
-    },
-    { name: "Autumn Cherry Tree", Price: "$74.95", Photo: p4 },
-    { name: "Meyer Lemon Tree", Price: "$74.95", Photo: p5 },
-    { name: "Red Haven Peach", Price: "$74.95", Photo: p6 }
+    { name: "Weeping Willow Tree", Price: "$74.95", Photo: p1, info: "Weeping Willow Tree Salix babylonica. A top choice for fast-growing shade, growing up to 3-4 ft. per year." },
+    { name: "Elberta Peach Tree", Price: "$90.95", Photo: p2, info: "Elberta Peach Tree yields large, juicy peaches ideal for eating and canning." },
+    { name: "Red Sunset Maple Tree", Price: "$144.95", Photo: p3, info: "Red Sunset Maple Tree with vibrant fall foliage, heat and drought tolerant." },
+    { name: "Autumn Cherry Tree", Price: "$74.95", Photo: p4, info: "Beautiful tree with delicate cherry blossoms during autumn." },
+    { name: "Meyer Lemon Tree", Price: "$74.95", Photo: p5, info: "Perfect for indoor/outdoor growth, produces juicy lemons." },
+    { name: "Red Haven Peach", Price: "$74.95", Photo: p6, info: "Cold-hardy variety of peach with great flavor." }
   ]);
 
   const [search, setSearch] = useState("");
@@ -155,12 +133,12 @@ function Shop() {
     });
   }
 
-  const filteredPlants = plant.filter((p) =>
+  const filteredPlants = plant.filter(p =>
     p.name.toLowerCase().includes(search.toLowerCase())
   );
 
   function handleInfoClick(index) {
-    navigate("/Information", { state: { plant: filteredPlants[index] } });
+    navigate("/information", { state: { plant: filteredPlants[index] } });
   }
 
   return (
@@ -173,9 +151,7 @@ function Shop() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <button id="darkmode" onClick={Mode}>
-          {img}
-        </button>
+        <button id="darkmode" onClick={Mode}>{img}</button>
       </nav>
       <div id="message">
         <h1>Buy Exotic Plants</h1>
@@ -196,6 +172,7 @@ function Shop() {
   );
 }
 
+// ---------- Information Component ----------
 function Information() {
   const location = useLocation();
   const { plant } = location.state || {};
@@ -211,5 +188,18 @@ function Information() {
       <p><b>Price:</b> {plant.Price}</p>
       <p>{plant.info}</p>
     </div>
+  );
+}
+
+// ---------- Main App Component ----------
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Navigate to="/login" />} />
+      <Route path="/login" element={<LoginForm />} />
+      <Route path="/signup" element={<SignupForm />} />
+      <Route path="/shop" element={<Shop />} />
+      <Route path="/information" element={<Information />} />
+    </Routes>
   );
 }
