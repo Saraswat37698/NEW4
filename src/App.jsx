@@ -99,17 +99,14 @@ function LoginForm()
   </>);
 }
 
-export default function App() 
-{
+export default function App() {
   return (
-    <Router>
-      <Routes>
+    <Routes>
       <Route path="/" element={<Navigate to="/login" />} />
       <Route path="/login" element={<LoginForm />} />
-      <Route path="/Shop" element={<Shop/>}/>
-      <Route path="/Information" element={<Information/>}/>
-      </Routes>
-    </Router>
+      <Route path="/Shop" element={<Shop />} />
+      <Route path="/Information" element={<Information />} />
+    </Routes>
   );
 }
 
