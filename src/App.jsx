@@ -128,10 +128,10 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="login" />} />
-      <Route path="login" element={<LoginForm />} />
-      <Route path="signup" element={<SignupForm />} />
-      <Route path="Shop" element={<Shop />} />
-      <Route path="Information" element={<Information />} />
+      <Route path="/login" element={<LoginForm />} />
+      <Route path="/signup" element={<SignupForm />} />
+      <Route path="/Shop" element={<Shop />} />
+      <Route path="/Information" element={<Information />} />
     </Routes>
   );
 }
