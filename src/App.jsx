@@ -29,7 +29,7 @@ function LoginForm() {
       storedUser.password === password
     ) {
       alert("Login successful!");
-      navigate("Shop"); // ✅ changed from "/Shop"
+      navigate("/Shop"); // ✅ changed from "/Shop"
     } else {
       alert("Invalid credentials!");
     }
@@ -63,7 +63,7 @@ function LoginForm() {
       <button className="login" onClick={Click}>
         Login
       </button>
-      <Link to="signup" id="switch">
+      <Link to="/signup" id="switch">
         Don't have an account? Sign up
       </Link>
     </div>
@@ -80,7 +80,7 @@ function SignupForm() {
     const user = { name, email, password };
     localStorage.setItem("user", JSON.stringify(user));
     alert("Sign up successful! You can now log in.");
-    navigate("login"); // ✅ changed from "/login"
+    navigate("/login"); // ✅ changed from "/login"
   }
 
   return (
@@ -117,7 +117,7 @@ function SignupForm() {
       <button className="login" onClick={Click}>
         Sign Up
       </button>
-      <Link to="login" id="switch">
+      <Link to="/login" id="switch">
         Already have an account? Log in
       </Link>
     </div>
@@ -196,7 +196,7 @@ function Shop() {
   );
 
   function handleInfoClick(index) {
-    navigate("Information", {
+    navigate("/Information", {
       state: { plant: filteredPlants[index] },
     }); // ✅ changed from "/Information"
   }
